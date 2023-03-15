@@ -14,16 +14,10 @@
     </div>
 
     <div class="container">
-      <div class="columns is-desktop is-mobile is-tablet is-multiline is-centered">
-        <div class="column is-12-mobile is-4-desktop is-4-tablet" v-for="character of characters" v-bind:key="character.id">
-          <div class="card">
-            <div class="card-header"><img v-bind:src="character.image" v-bind:alt="character.name"></div>
-            <div class="card-content">
-              <h3 class="title is-size-4">{{ character.name }}</h3>
-              <button class=" button is-success is-rounded is-small">See more</button>
-            </div>
-          </div>
-        </div>
+      <div 
+        class="columns is-desktop is-mobile is-tablet is-multiline is-centered"
+      >
+        <character v-for="character of characters" v-bind:key="character.id" v-bind:character = "character"></character>
       </div>
     </div>
 
@@ -33,8 +27,12 @@
 <script>
 // libraries
 import axios from "axios";
+import Character from './components/Character.vue'
 
 export default {
+  components: {
+    Character
+  },
   data: function() {
     return {
       characters: []
