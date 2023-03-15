@@ -29,7 +29,8 @@
       <div 
         class="columns is-desktop is-mobile is-tablet is-multiline is-centered"
       >
-        <character 
+        <character
+          @showModal="showModal" 
           v-for="character of characters" 
           v-bind:key="character.id" 
           v-bind:character = "character">
@@ -49,6 +50,37 @@
       </nav>
     </div>
 
+    <div class="modal"
+      :class="{ 'is-active': modal }"
+      v-if="modal"
+    >
+      <div class="modal-background" @click="modal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">About: {{ currentCharacter.name }}</p>
+        </header>
+
+        <div class="modal-card-body">
+          <p>Gender:</p>
+          <strong>{{ currentCharacter.gender }}</strong>
+  
+          <p>Status:</p> 
+          <strong>{{ currentCharacter.status }}</strong>
+          
+          <p>Species:</p>
+          <strong>{{ currentCharacter.species }}</strong>
+  
+          <p>Type:</p>
+          <strong>{{ currentCharacter.type }}</strong>
+        </div>
+
+
+        <footer class="modal-card-food">
+          <button class="button" @click="modal = false">Close</button>
+        </footer>
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,7 +98,9 @@ export default {
       characters: [],
       page: 1,
       pages: 1,
-      search: ''
+      search: '',
+      modal: false,
+      currentCharacter: {}
     }
   },
   created() {
@@ -98,6 +132,18 @@ export default {
     searchData() {
       this.page = 1
       this.fetch()
+    },
+    showModal(id) {
+      this.fetchOne(id)
+    },
+    async fetchOne(id) {
+      let result = await axios.get(
+        `https://rickandmortyapi.com/api/character/${id}/`
+      )
+      this.currentCharacter = result.data
+      this.modal = true
+
+      console.log(this.currentCharacter, "Character")
     }
   }
 }

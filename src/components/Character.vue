@@ -4,7 +4,7 @@
             <div class="card-header"><img v-bind:src="character.image" v-bind:alt="character.name"></div>
             <div class="card-content">
                 <h3 class="title is-size-4">{{ character.name }}</h3>
-                <button class=" button is-success is-rounded is-small">See more</button>
+                <button class=" button is-success is-rounded is-small" @click="showMore(character.id)">See more</button>
             </div>
         </div>
     </div>
@@ -12,6 +12,11 @@
 
 <script>
 export default {
-    props: ["character"]
+    props: ["character"],
+    methods: {
+        showMore(id) {
+            this.$emit('showModal', id)
+        }
+    }
 }
 </script>
