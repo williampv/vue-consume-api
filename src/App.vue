@@ -8,7 +8,19 @@
           <span class="subtitle">Characters</span>
         </h1>
 
-        <button class="button is-success is-rounded" @click="fetch">GET</button>
+        <div class="field has-addons is-pulled-right">
+          <div class="control">
+            <input 
+              v-model="search" 
+              type="text" 
+              class="input is-rounded" 
+              v-on:keyup.enter="searchData"
+            >
+          </div>
+          <div class="control">
+            <button class="button is-success is-rounded" @click="searchData">Search</button>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -53,7 +65,8 @@ export default {
     return {
       characters: [],
       page: 1,
-      pages: 1
+      pages: 1,
+      search: ''
     }
   },
   created() {
@@ -62,7 +75,8 @@ export default {
   methods: {
     fetch(){
       const params = {
-        page: this.page
+        page: this.page,
+        name: this.search
       }      
 
       let result = axios
@@ -79,6 +93,10 @@ export default {
     },
     changePage(page) {
       this.page = page <= 0 || page > this.pages ? this.page : page
+      this.fetch()
+    },
+    searchData() {
+      this.page = 1
       this.fetch()
     }
   }
